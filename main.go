@@ -13,15 +13,31 @@ type PageData struct {
 	Error  string
 }
 
+// Custom error handlers
+func handleNotFound(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	templates.ExecuteTemplate(w, "404.html", nil)
+}
+
+func handleInternalError(w http.ResponseWriter, r *http.Request, err error) {
+	fmt.Printf("Internal Server Error: %v\n", err)
+	w.WriteHeader(http.StatusInternalServerError)
+	templates.ExecuteTemplate(w, "500.html", nil)
+}
+
+var templates *template.Template
+
 func main() {
-	templates := template.Must(template.ParseGlob("templates/*.html"))
+	templates = template.Must(template.ParseGlob("templates/*.html"))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
-			http.NotFound(w, r)
+			handleNotFound(w, r)
 			return
 		}
-		templates.ExecuteTemplate(w, "index.html", &PageData{})
+		if err := templates.ExecuteTemplate(w, "index.html", &PageData{}); err != nil {
+			handleInternalError(w, r, err)
+		}
 	})
 
 	http.HandleFunc("/ascii-art", func(w http.ResponseWriter, r *http.Request) {
@@ -34,24 +50,29 @@ func main() {
 		banner := r.FormValue("banner")
 
 		if text == "" {
-			templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Text is required"})
+			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Text is required"}); err != nil {
+				handleInternalError(w, r, err)
+			}
 			return
 		}
 
-		// Choose banner file based on selection
 		bannerFile := banner + ".txt"
 		if !isValidBanner(bannerFile) {
-			templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Invalid banner selected"})
+			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Invalid banner selected"}); err != nil {
+				handleInternalError(w, r, err)
+			}
 			return
 		}
 
 		art, err := AsciiArt(text, bannerFile)
 		if err != nil {
-			templates.ExecuteTemplate(w, "index.html", &PageData{Error: err.Error()})
+			handleInternalError(w, r, err)
 			return
 		}
 
-		templates.ExecuteTemplate(w, "index.html", &PageData{Result: art})
+		if err := templates.ExecuteTemplate(w, "index.html", &PageData{Result: art}); err != nil {
+			handleInternalError(w, r, err)
+		}
 	})
 
 	fmt.Println("Server running on http://localhost:8080")
@@ -76,7 +97,6 @@ func AsciiArt(input string, banner string) (string, error) {
 	// Handle different types of line endings
 	input = strings.ReplaceAll(input, "\r\n", "\n") // Convert Windows line endings
 	input = strings.ReplaceAll(input, "\r", "\n")   // Convert old Mac line endings
-	
 
 	fontBytes, err := os.ReadFile(banner)
 	if err != nil {
