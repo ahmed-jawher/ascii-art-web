@@ -12,6 +12,7 @@ import (
 type PageData struct {
 	Result string
 	Error  string
+	Text   string
 }
 
 // Custom error handlers
@@ -55,7 +56,7 @@ func main() {
 		banner := r.FormValue("banner")
 
 		if text == "" {
-			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Text is required"}); err != nil {
+			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Text is required", Text: text}); err != nil {
 				handleInternalError(w, r, err)
 			}
 			return
@@ -63,7 +64,7 @@ func main() {
 
 		bannerFile := banner + ".txt"
 		if !isValidBanner(bannerFile) {
-			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Invalid banner selected"}); err != nil {
+			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Invalid banner selected", Text: text}); err != nil {
 				handleInternalError(w, r, err)
 			}
 			return
@@ -71,13 +72,13 @@ func main() {
 
 		art, err := AsciiArt(text, bannerFile)
 		if err != nil {
-			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Please use only ASCII characters "}); err != nil {
+			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Please use only ASCII characters", Text: text}); err != nil {
 				handleInternalError(w, r, err)
 			}
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "index.html", &PageData{Result: art}); err != nil {
+		if err := templates.ExecuteTemplate(w, "index.html", &PageData{Result: art, Text: text}); err != nil {
 			handleInternalError(w, r, err)
 		}
 	})
