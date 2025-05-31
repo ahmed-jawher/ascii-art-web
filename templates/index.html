@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASCII Art Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>ASCII Art Generator</h1>
+        <form action="/ascii-art" method="POST">
+            <textarea 
+                name="text" 
+                placeholder="Enter your text here..."
+                required 
+                style="white-space: pre;"
+            ></textarea>
+            <fieldset>
+                <legend>Select Banner Style</legend>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="banner" value="standard" checked>
+                        Standard
+                    </label>
+                    <label>
+                        <input type="radio" name="banner" value="shadow">
+                        Shadow
+                    </label>
+                    <label>
+                        <input type="radio" name="banner" value="thinkertoy">
+                        Thinkertoy
+                    </label>
+                </div>
+            </fieldset>
+            <button type="submit">Generate ASCII Art</button>
+        </form>
+        {{if .Result}}
+        <pre>{{.Result}}</pre>
+        {{end}}
+        {{if .Error}}
+        <div class="error">{{.Error}}</div>
+        {{end}}
+    </div>
+</body>
+</html>
