@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -98,7 +99,8 @@ func AsciiArt(input string, banner string) (string, error) {
 	input = strings.ReplaceAll(input, "\r\n", "\n") // Convert Windows line endings
 	input = strings.ReplaceAll(input, "\r", "\n")   // Convert old Mac line endings
 
-	fontBytes, err := os.ReadFile(banner)
+	bannerPath := filepath.Join("banners", banner)
+	fontBytes, err := os.ReadFile(bannerPath)
 	if err != nil {
 		return "", fmt.Errorf("read font: %w", err)
 	}
