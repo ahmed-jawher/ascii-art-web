@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASCII Art Generator</title>
+</head>
+<body>
+    <h1>ASCII Art Generator</h1>
+    <form action="/ascii-art" method="POST">
+        <textarea name="text" rows="4" cols="50" required style="white-space: pre;"></textarea>
+        <br><br>
+        <fieldset>
+            <legend>Select Banner Style:</legend>
+            <input type="radio" name="banner" value="standard" checked> Standard
+            <input type="radio" name="banner" value="shadow"> Shadow
+            <input type="radio" name="banner" value="thinkertoy"> Thinkertoy
+        </fieldset>
+        <br>
+        <button type="submit">Generate ASCII Art</button>
+    </form>
+    {{if .Result}}
+    <pre>{{.Result}}</pre>
+    {{end}}
+    {{if .Error}}
+    <p style="color: red">{{.Error}}</p>
+    {{end}}
+</body>
+</html>
