@@ -2,11 +2,19 @@
 <html>
 <head>
     <title>ASCII Art Generator</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        textarea, fieldset, pre {
+            margin: 5px auto;
+        }
+    </style>
 </head>
 <body>
     <h1>ASCII Art Generator</h1>
     <form action="/ascii-art" method="POST">
-        <textarea name="text" rows="4" cols="50" required style="white-space: pre;"></textarea>
+        <textarea name="text" rows="4" cols="50" style="white-space: pre;">{{if .Result}}{{.Text}}{{end}}</textarea>
         <br><br>
         <fieldset>
             <legend>Select Banner Style:</legend>

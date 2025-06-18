@@ -12,6 +12,7 @@ import (
 type PageData struct {
 	Result string
 	Error  string
+	Text   string
 }
 
 // Custom error handlers
@@ -20,10 +21,14 @@ func handleNotFound(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "404.html", nil)
 }
 
-func handleInternalError(w http.ResponseWriter, r *http.Request, err error) {
-	fmt.Printf("Internal Server Error: %v\n", err)
+func handleInternalError(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusInternalServerError)
 	templates.ExecuteTemplate(w, "500.html", nil)
+}
+
+func handleBadRequest(w http.ResponseWriter, r *http.Request, message string) {
+	w.WriteHeader(http.StatusForbidden)
+	templates.ExecuteTemplate(w, "403.html", &PageData{Error: message})
 }
 
 var templates *template.Template
@@ -37,13 +42,13 @@ func main() {
 			return
 		}
 		if err := templates.ExecuteTemplate(w, "index.html", &PageData{}); err != nil {
-			handleInternalError(w, r, err)
+			handleInternalError(w, r)
 		}
 	})
 
 	http.HandleFunc("/ascii-art", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			handleBadRequest(w, r, "Method not allowed")
 			return
 		}
 
@@ -51,28 +56,31 @@ func main() {
 		banner := r.FormValue("banner")
 
 		if text == "" {
-			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Text is required"}); err != nil {
-				handleInternalError(w, r, err)
-			}
+			handleBadRequest(w, r, "Text is required")
 			return
 		}
 
 		bannerFile := banner + ".txt"
 		if !isValidBanner(bannerFile) {
-			if err := templates.ExecuteTemplate(w, "index.html", &PageData{Error: "Invalid banner selected"}); err != nil {
-				handleInternalError(w, r, err)
-			}
+			handleBadRequest(w, r, "Invalid banner selected")
 			return
 		}
 
 		art, err := AsciiArt(text, bannerFile)
 		if err != nil {
-			handleInternalError(w, r, err)
+			if strings.Contains(err.Error(), "unsupported character") {
+				handleBadRequest(w, r, err.Error())
+				return
+			}
+			handleInternalError(w, r)
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "index.html", &PageData{Result: art}); err != nil {
-			handleInternalError(w, r, err)
+		if err := templates.ExecuteTemplate(w, "index.html", &PageData{
+			Result: art,
+			Text:   text,
+		}); err != nil {
+			handleInternalError(w, r)
 		}
 	})
 
