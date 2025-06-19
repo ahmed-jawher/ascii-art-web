@@ -2,45 +2,48 @@
 <html>
 <head>
     <title>ASCII Art Generator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS is loaded from external file -->
 </head>
 <body>
-    <div class="container">
-        <h1>ASCII Art Generator</h1>
-        <form action="/ascii-art" method="POST">
-            <textarea 
-                name="text" 
-                placeholder="Enter your text here..."
-                required 
-                style="white-space: pre;"
-            >{{.Text}}</textarea>
-            <fieldset>
-                <legend>Select Banner Style</legend>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="banner" value="standard" checked>
-                        Standard
-                    </label>
-                    <label>
-                        <input type="radio" name="banner" value="shadow">
-                        Shadow
-                    </label>
-                    <label>
-                        <input type="radio" name="banner" value="thinkertoy">
-                        Thinkertoy
-                    </label>
-                </div>
-            </fieldset>
-            <button type="submit">Generate ASCII Art</button>
-        </form>
-        {{if .Result}}
-        <pre>{{.Result}}</pre>
-        {{end}}
-        {{if .Error}}
-        <div class="error">{{.Error}}</div>
-        {{end}}
+    <h1>ASCII Art Generator</h1>
+    <div class="split-container">
+        <div class="input-panel">
+            <form action="/ascii-art" method="POST">
+                <textarea name="text" placeholder="Enter your text here...">{{if .Result}}{{.Text}}{{end}}</textarea>
+                <fieldset>
+                    <legend>Select Banner Style:</legend>
+                    <div class="radio-group">
+                        <label class="futuristic-radio">
+                            <input type="radio" name="banner" value="standard" checked>
+                            <span class="custom-radio"></span>
+                            Standard
+                        </label>
+                        <label class="futuristic-radio">
+                            <input type="radio" name="banner" value="shadow">
+                            <span class="custom-radio"></span>
+                            Shadow
+                        </label>
+                        <label class="futuristic-radio">
+                            <input type="radio" name="banner" value="thinkertoy">
+                            <span class="custom-radio"></span>
+                            Thinkertoy
+                        </label>
+                    </div>
+                </fieldset>
+                <button type="submit">Generate ASCII Art</button>
+            </form>
+            {{if .Error}}
+            <div class="error">{{.Error}}</div>
+            {{end}}
+        </div>
+        <div class="output-panel">
+            {{if .Result}}
+            <pre>{{.Result}}</pre>
+            {{end}}
+        </div>
     </div>
 </body>
 </html>
