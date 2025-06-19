@@ -36,6 +36,9 @@ var templates *template.Template
 func main() {
 	templates = template.Must(template.ParseGlob("templates/*.html"))
 
+	// Serve static files
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			handleNotFound(w, r)

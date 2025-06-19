@@ -2,25 +2,32 @@
 <html>
 <head>
     <title>ASCII Art Generator</title>
-    <style>
-        body {
-            text-align: center;
-        }
-        textarea, fieldset, pre {
-            margin: 5px auto;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS is loaded from external file -->
 </head>
 <body>
     <h1>ASCII Art Generator</h1>
     <form action="/ascii-art" method="POST">
-        <textarea name="text" rows="4" cols="50" style="white-space: pre;">{{if .Result}}{{.Text}}{{end}}</textarea>
+        <textarea name="text" placeholder="Enter your text here...">{{if .Result}}{{.Text}}{{end}}</textarea>
         <br><br>
         <fieldset>
             <legend>Select Banner Style:</legend>
-            <input type="radio" name="banner" value="standard" checked> Standard
-            <input type="radio" name="banner" value="shadow"> Shadow
-            <input type="radio" name="banner" value="thinkertoy"> Thinkertoy
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="banner" value="standard" checked>
+                    Standard
+                </label>
+                <label>
+                    <input type="radio" name="banner" value="shadow">
+                    Shadow
+                </label>
+                <label>
+                    <input type="radio" name="banner" value="thinkertoy">
+                    Thinkertoy
+                </label>
+            </div>
         </fieldset>
         <br>
         <button type="submit">Generate ASCII Art</button>
@@ -29,7 +36,7 @@
     <pre>{{.Result}}</pre>
     {{end}}
     {{if .Error}}
-    <p style="color: red">{{.Error}}</p>
+    <div class="error">{{.Error}}</div>
     {{end}}
 </body>
 </html>
