@@ -1,0 +1,11 @@
+# Ignore files and folders not needed in the Docker image
+*.go~
+*.swp
+.git
+.gitignore
+Dockerfile
+README.md
+*.md
+testdata/
+node_modules/
+.vscode/
