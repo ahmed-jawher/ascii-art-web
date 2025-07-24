@@ -12,7 +12,7 @@
     <div class="split-container">
         <div class="input-panel">
             <form action="/ascii-art" method="POST">
-                <textarea name="text" placeholder="Enter your text here...">{{if .Result}}{{.Text}}{{end}}</textarea>
+                <textarea required name="text" placeholder="Enter your text here...">{{if .Result}}{{.Text}}{{end}}</textarea>
                 <fieldset>
                     <legend>Select Banner Style:</legend>
                     <div class="radio-group">

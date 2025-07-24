@@ -27,13 +27,13 @@ h1 {
 }
 
 .split-container {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
-    margin: 0;
-    padding: 0 0 32px 0;
-    align-items: stretch;
+display: flex;
+flex-direction: column;
+gap: 24px;
+width: 100%;
+margin: 0;
+padding: 0 0 32px 0;
+align-items: stretch;
 }
 
 .input-panel, .output-panel {
@@ -44,7 +44,7 @@ h1 {
     box-sizing: border-box;
     background: #232946;
     border-radius: 18px;
-    box-shadow: 0 4px 32px #7f5af033, 0 1.5px 8px #2cb67d22;
+    box-shadow: 0 4px 32px #8f7fe833, 0 1.5px 8px #2cb67d22;
     padding: 32px 24px;
     flex: 1 1 0;
 }
@@ -223,3 +223,121 @@ pre {
     font-weight: 600;
     box-shadow: 0 0 8px #ff386088;
 }
+
+/* Responsive Design: Flexible for all devices */
+@media (max-width: 1200px) {
+  .split-container {
+    flex-direction: column;
+    gap: 18px;
+    padding: 0 0 24px 0;
+  }
+  .input-panel, .output-panel {
+    padding: 24px 12px;
+  }
+  pre {
+    padding: 18px 8px;
+    font-size: 1em;
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 2em;
+    margin: 24px 0 16px 0;
+  }
+  .split-container {
+    gap: 12px;
+    padding: 0 0 12px 0;
+  }
+  .input-panel, .output-panel {
+    padding: 12px 4px;
+    border-radius: 10px;
+  }
+  textarea {
+    font-size: 1em;
+    padding: 12px;
+    min-height: 80px;
+  }
+  fieldset {
+    padding: 10px 6px 6px 6px;
+  }
+  legend {
+    font-size: 1em;
+    padding: 0 6px;
+  }
+  .radio-group {
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  button {
+    font-size: 1em;
+    padding: 10px 0;
+    border-radius: 8px;
+  }
+  pre {
+    font-size: 0.95em;
+    padding: 10px 4px;
+    min-height: 120px;
+  }
+  .error {
+    padding: 8px 6px;
+    font-size: 0.95em;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 0 2px;
+  }
+  h1 {
+    font-size: 1.3em;
+    margin: 16px 0 8px 0;
+    letter-spacing: 1px;
+  }
+  .split-container {
+    gap: 6px;
+    padding: 0 0 6px 0;
+  }
+  .input-panel, .output-panel {
+    padding: 6px 2px;
+    border-radius: 6px;
+  }
+  textarea {
+    font-size: 0.95em;
+    padding: 6px;
+    min-height: 50px;
+  }
+  fieldset {
+    padding: 6px 2px 2px 2px;
+  }
+  legend {
+    font-size: 0.95em;
+    padding: 0 2px;
+  }
+  .radio-group {
+    gap: 4px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  button {
+    font-size: 0.95em;
+    padding: 6px 0;
+    border-radius: 5px;
+  }
+  pre {
+    font-size: 0.9em;
+    padding: 6px 2px;
+    min-height: 60px;
+  }
+  .error {
+    padding: 4px 2px;
+    font-size: 0.9em;
+    margin-top: 6px;
+    border-radius: 5px;
+  }
+}
+
