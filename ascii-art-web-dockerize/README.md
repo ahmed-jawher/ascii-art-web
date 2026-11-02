@@ -1,29 +1,24 @@
-# ASCII Art Web Dockerized
+# ASCII Art Web — Dockerize
 
-A containerized ASCII art web application built with Go, featuring optimized Docker builds and security best practices.
+Stage 3 of [ASCII Art Web](../README.md). It packages the application in a Docker container so it runs the same way on any machine.
 
-## Quick Start
+## What's New
 
-### Build the Docker image
+- Code reorganized into an `internal/` package (`ascii.go`, `handlers.go`) to keep `main.go` small
+- A `Dockerfile` based on the official `golang` image that exposes port `8080`
+- Runs anywhere Docker is installed, with no local Go setup required
+
+## Run with Docker
 
 ```bash
 docker build -t ascii-art-web:latest .
-```
-
-### Run the container
-
-```bash
 docker run --rm -p 8080:8080 ascii-art-web:latest
 ```
 
+Then open <http://localhost:8080>.
 
+## Run without Docker
 
-## Docker Features
-
-- **Multi-stage build** - Optimized for smaller final image size
-- **Distroless base image** - Enhanced security with minimal attack surface
-- **Non-root user** - Runs as non-privileged user for better security
-- **Layer caching** - Optimized build process with Go modules caching
-- **Static binary** - Self-contained executable with no external dependencies
-
-
+```bash
+go run main.go
+```
